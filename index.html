@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,26 +11,27 @@
 <body>
     <div class="container mt-5">
         <h1>Selección de Ubicación</h1>
-        <form id="locationForm">
+        <form id="formularioUbicacion">
             <div class="mb-3">
-                <label for="countrySelect" class="form-label">País:</label>
-                <select class="form-select" id="countrySelect" onchange="populateStates()"></select>
+                <label for="selectPais" class="form-label">País:</label>
+                <select class="form-select" id="selectPais" onchange="llenarEstados()"></select>
             </div>
             <div class="mb-3">
-                <label for="stateSelect" class="form-label">Estado:</label>
-                <select class="form-select" id="stateSelect" onchange="populateMunicipalities()"></select>
+                <label for="selectEstado" class="form-label">Estado:</label>
+                <select class="form-select" id="selectEstado" onchange="llenarMunicipios()"></select>
             </div>
             <div class="mb-3">
-                <label for="municipalitySelect" class="form-label">Municipio:</label>
-                <select class="form-select" id="municipalitySelect" onchange="populateLocalities()"></select>
+                <label for="selectMunicipio" class="form-label">Municipio:</label>
+                <select class="form-select" id="selectMunicipio" onchange="llenarLocalidades()"></select>
             </div>
             <div class="mb-3">
-                <label for="localitySelect" class="form-label">Localidad:</label>
-                <select class="form-select" id="localitySelect"></select>
+                <label for="selectLocalidad" class="form-label">Localidad:</label>
+                <select class="form-select" id="selectLocalidad"></select>
             </div>
-            <button type="button" class="btn btn-primary" onclick="displaySelectedData()">Enviar</button>
+            <button type="button" class="btn btn-primary" onclick="mostrarDatosSeleccionados()">Enviar</button>
         </form>
-        <div class="mt-3" id="displayData"></div>
+        <!-- En este div se mostrara la informacion del usuario -->
+        <div class="mt-3" id="mostrarDatos"></div>
     </div>
     <script src="index.js"></script>
 </body>
