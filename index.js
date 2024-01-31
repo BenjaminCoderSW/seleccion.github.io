@@ -1,12 +1,12 @@
 // Datos de ejemplo para México y Estados Unidos
-const countries = {
-    Mexico: {
-        states: ["Ciudad de México", "Nuevo León", "Jalisco"],
-        municipalities: {
+const paises = {
+    México: {
+        estados: ["Ciudad de México", "Nuevo León", "Jalisco"],
+        municipios: {
             "Ciudad de México": {
-                "Benito Juárez": ["Localidad1", "Localidad2", "Localidad3"],
-                "Coyoacán": ["Localidad4", "Localidad5", "Localidad6"],
-                "Miguel Hidalgo": ["Localidad7", "Localidad8", "Localidad9"]
+                "Benito Juárez": ["Colonia del Valle", "Narvarte", "Del Valle Centro"],
+                "Coyoacán": ["Coyoacán Centro", "Santa Catarina", "Los Pedregales"],
+                "Miguel Hidalgo": ["Polanco", "Lomas de Chapultepec", "Anáhuac"]
             },
             "Nuevo León": {
                 "Monterrey": ["Localidad10", "Localidad11", "Localidad12"],
@@ -21,8 +21,8 @@ const countries = {
         }
     },
     "Estados Unidos": {
-        states: ["California", "Texas", "Florida"],
-        municipalities: {
+        estados: ["California", "Texas", "Florida"],
+        municipios: {
             "California": {
                 "Los Angeles": ["Localidad28", "Localidad29", "Localidad30"],
                 "San Francisco": ["Localidad31", "Localidad32", "Localidad33"],
@@ -42,68 +42,89 @@ const countries = {
     }
 };
 
+// Obtener el elemento select de países
+const selectPais = document.getElementById('selectPais');
+
 // Llenar el select de países con los nombres de los países
-const countrySelect = document.getElementById('countrySelect');
-for (const country in countries) {
-    const option = document.createElement('option');
-    option.textContent = country;
-    countrySelect.appendChild(option);
+for (const pais in paises) { // Recorre sobre cada país en el arreglo 'paises'
+    const opcion = document.createElement('option'); // Crea un nuevo elemento 'option' 
+    opcion.textContent = pais; // Establece el texto del elemento 'option' como el nombre del país
+    selectPais.appendChild(opcion); // Agrega el elemento 'option' al menú desplegable de países
 }
 
+
 // Función para llenar el select de estados basado en el país seleccionado
-function populateStates() {
-    const selectedCountry = countrySelect.value;
-    const stateSelect = document.getElementById('stateSelect');
-    stateSelect.innerHTML = ''; // Limpiar opciones anteriores
-    countries[selectedCountry].states.forEach(state => {
-        const option = document.createElement('option');
-        option.textContent = state;
-        stateSelect.appendChild(option);
+function llenarEstados() {
+    // Obtener el país seleccionado
+    const paisSeleccionado = selectPais.value;
+    // Obtener el elemento select de estados
+    const selectEstado = document.getElementById('selectEstado');
+    // Limpiar opciones anteriores
+    selectEstado.innerHTML = '';
+    // Iterar sobre los estados del país seleccionado y agregar opciones al select de estados
+    paises[paisSeleccionado].estados.forEach(estado => {
+        const opcion = document.createElement('option');
+        opcion.textContent = estado;
+        selectEstado.appendChild(opcion);
     });
-    // Llamar a populateMunicipalities para llenar las opciones de municipios basado en el estado seleccionado
-    populateMunicipalities();
+    // Llamar a llenarMunicipios para llenar las opciones de municipios basado en el estado seleccionado
+    llenarMunicipios();
 }
 
 // Función para llenar el select de municipios basado en el estado seleccionado
-function populateMunicipalities() {
-    const selectedCountry = countrySelect.value;
-    const selectedState = document.getElementById('stateSelect').value;
-    const municipalitySelect = document.getElementById('municipalitySelect');
-    municipalitySelect.innerHTML = ''; // Limpiar opciones anteriores
-    for (const municipality in countries[selectedCountry].municipalities[selectedState]) {
-        const option = document.createElement('option');
-        option.textContent = municipality;
-        municipalitySelect.appendChild(option);
+function llenarMunicipios() {
+    // Obtener el país y el estado seleccionados
+    const paisSeleccionado = selectPais.value;
+    const estadoSeleccionado = document.getElementById('selectEstado').value;
+    // Obtener el elemento select de municipios
+    const selectMunicipio = document.getElementById('selectMunicipio');
+    // Limpiar opciones anteriores
+    selectMunicipio.innerHTML = '';
+    // Iterar sobre los municipios del estado seleccionado y agregar opciones al select de municipios
+    for (const municipio in paises[paisSeleccionado].municipios[estadoSeleccionado]) {
+        const opcion = document.createElement('option');
+        opcion.textContent = municipio;
+        selectMunicipio.appendChild(opcion);
     }
-    // Llamar a populateLocalities para llenar las opciones de localidades basado en el municipio seleccionado
-    populateLocalities();
+    // Llamar a llenarLocalidades para llenar las opciones de localidades basado en el municipio seleccionado
+    llenarLocalidades();
 }
 
 // Función para llenar el select de localidades basado en el municipio seleccionado
-function populateLocalities() {
-    const selectedCountry = countrySelect.value;
-    const selectedState = document.getElementById('stateSelect').value;
-    const selectedMunicipality = document.getElementById('municipalitySelect').value;
-    const localitySelect = document.getElementById('localitySelect');
-    localitySelect.innerHTML = ''; // Limpiar opciones anteriores
-    countries[selectedCountry].municipalities[selectedState][selectedMunicipality].forEach(locality => {
-        const option = document.createElement('option');
-        option.textContent = locality;
-        localitySelect.appendChild(option);
+function llenarLocalidades() {
+    // Obtener el país, el estado y el municipio seleccionados
+    const paisSeleccionado = selectPais.value;
+    const estadoSeleccionado = document.getElementById('selectEstado').value;
+    const municipioSeleccionado = document.getElementById('selectMunicipio').value;
+    // Obtener el elemento select de localidades
+    const selectLocalidad = document.getElementById('selectLocalidad');
+    // Limpiar opciones anteriores
+    selectLocalidad.innerHTML = '';
+    // Iterar sobre las localidades del municipio seleccionado y agregar opciones al select de localidades
+    paises[paisSeleccionado].municipios[estadoSeleccionado][municipioSeleccionado].forEach(localidad => {
+        const opcion = document.createElement('option');
+        opcion.textContent = localidad;
+        selectLocalidad.appendChild(opcion);
     });
 }
 
-// Función para mostrar los datos seleccionados
-function displaySelectedData() {
-    const selectedCountry = countrySelect.value;
-    const selectedState = document.getElementById('stateSelect').value;
-    const selectedMunicipality = document.getElementById('municipalitySelect').value;
-    const selectedLocality = document.getElementById('localitySelect').value;
-    const displayData = document.getElementById('displayData');
-    displayData.innerHTML = `
-        <p>País: ${selectedCountry}</p>
-        <p>Estado: ${selectedState}</p>
-        <p>Municipio: ${selectedMunicipality}</p>
-        <p>Localidad: ${selectedLocality}</p>
+// Función para mostrar los datos seleccionados con el botón en el div con id mostrarDatos
+function mostrarDatosSeleccionados() {
+    // Obtener el país seleccionado del elemento selectPais
+    const paisSeleccionado = selectPais.value;
+    // Obtener el estado seleccionado del elemento con id selectEstado
+    const estadoSeleccionado = document.getElementById('selectEstado').value;
+    // Obtener el municipio seleccionado del elemento con id selectMunicipio
+    const municipioSeleccionado = document.getElementById('selectMunicipio').value;
+    // Obtener la localidad seleccionada del elemento con id selectLocalidad
+    const localidadSeleccionada = document.getElementById('selectLocalidad').value;
+    // Obtener el elemento div con id mostrarDatos
+    const mostrarDatos = document.getElementById('mostrarDatos');
+    // Mostrar los datos seleccionados dentro del div mostrarDatos
+    mostrarDatos.innerHTML = `
+        <p>País: ${paisSeleccionado}</p>
+        <p>Estado: ${estadoSeleccionado}</p>
+        <p>Municipio: ${municipioSeleccionado}</p>
+        <p>Localidad: ${localidadSeleccionada}</p>
     `;
 }
